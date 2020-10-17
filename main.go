@@ -6,19 +6,14 @@ import (
 	"log"
 	"strings"
     "math/rand"
-	//"path"
 	"net/http"
 	"net/url"
 	"time"
 	"context"
-	//"io/ioutil"
     "strconv"
-	// "github.com/gorilla/mux"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 	"go.mongodb.org/mongo-driver/bson"
-	//"go.mongodb.org/mongo-driver/bson/primitive"
-    //"go.mongodb.org/mongo-driver/mongo/readpref"
 )
 
 type server struct{}
@@ -45,8 +40,10 @@ type Participant struct {
 // Init books var as a slice Book struct
 var meetings []Meeting
 
-
+// create collection for mongoDB
 var collection *mongo.Collection = ConnectDB()
+
+//create connection for mongoDB
 func ConnectDB() *mongo.Collection {
 
 	// Set client options
@@ -66,13 +63,15 @@ func ConnectDB() *mongo.Collection {
 	return collection
 }
 
-
+// Initialise server
 func (s *server) ServeHTTP(w http.ResponseWriter, r *http.Request) {
     w.Header().Set("Content-Type", "application/json")
     w.WriteHeader(http.StatusOK)
     w.Write([]byte(`{"message": "hello world"}`))
 }
 
+
+//show all meetings
 func allmeetings(w http.ResponseWriter, r *http.Request) {
     w.Header().Set("Content-Type", "application/json")
     switch r.Method {
@@ -95,10 +94,8 @@ func allmeetings(w http.ResponseWriter, r *http.Request) {
 
 		for cur.Next(context.TODO()) {
 
-			// create a value into which the single document can be decoded
 			var meeting Meeting
-			// & character returns the memory address of the following variable.
-			err := cur.Decode(&meeting) // decode similar to deserialize process.
+			err := cur.Decode(&meeting) 
 			if err != nil {
 				log.Fatal(err)
 			}
@@ -128,7 +125,6 @@ func allmeetings(w http.ResponseWriter, r *http.Request) {
 			log.Fatal(err)
 			w.Write([]byte(`{"message": "some database error occured"}`))
 		}
-		//meetings = append(meetings, meeting)
 
 		json.NewEncoder(w).Encode(result)
 
@@ -144,6 +140,8 @@ func allmeetings(w http.ResponseWriter, r *http.Request) {
     }
 }
 
+//show meeting with specific id
+
 func singlemeeting(w http.ResponseWriter, r *http.Request) {
     w.Header().Set("Content-Type", "application/json")
     switch r.Method {
@@ -153,10 +151,8 @@ func singlemeeting(w http.ResponseWriter, r *http.Request) {
 		w.Write([]byte(`{"message": "single get called"}`))
 		
 		w.Header().Set("Content-Type", "application/json")
-		//params := mux.Vars(r) // Gets params
-		//id := r.URL.Query().Get("id")
+
 		parts := strings.Split(r.URL.String(), "/")
-		//fmt.Printf(parts[2]);
 		meetid := parts[2]
 		var meeting Meeting
 
@@ -187,7 +183,7 @@ func singlemeeting(w http.ResponseWriter, r *http.Request) {
     }
 }
 
-
+// show meetings associated specific emails and start-time and end-time
 func specificMeetings(w http.ResponseWriter, r *http.Request) {
     w.Header().Set("Content-Type", "application/json")
     switch r.Method {
@@ -226,10 +222,8 @@ func specificMeetings(w http.ResponseWriter, r *http.Request) {
 
 		for cur.Next(context.TODO()) {
 
-			// create a value into which the single document can be decoded
 			var meeting Meeting
-			// & character returns the memory address of the following variable.
-			err := cur.Decode(&meeting) // decode similar to deserialize process.
+			err := cur.Decode(&meeting)
 			if err != nil {
 				log.Fatal(err)
 			}
@@ -274,8 +268,6 @@ func specificMeetings(w http.ResponseWriter, r *http.Request) {
 
 // Main function
 func main() {
-
-	// Hardcoded data - @todo: add database
 
 
 	fileServer := http.FileServer(http.Dir("./static")) // New code
