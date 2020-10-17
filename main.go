@@ -18,7 +18,6 @@ import (
 
 type server struct{}
 
-// Book struct (Model)
 type Meeting struct {
 	ID     string  `json:"id"`
 	Title  string  `json:"title"`
@@ -35,9 +34,8 @@ type Participant struct {
 	RSVP  string `json:"rsvp"`
 }
 
-// var participantsArray []Participants
 
-// Init books var as a slice Book struct
+// Init meetings var as a slice Meeting struct
 var meetings []Meeting
 
 // create collection for mongoDB
