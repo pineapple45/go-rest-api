@@ -1,0 +1,45 @@
+<html>
+  <head>
+    <title>Static Website</title>
+  </head>
+  <body>
+
+    <h2>POST REQUEST IS MADE TO /meetings using POSTMAN</h2>
+    <h2>For creating meeting: </h2>
+    <a href="http://localhost:8080/meetings">http://localhost:8080/meetings</a>
+    <br />
+    <h2>For Accessing all meeting: </h2>
+    <div>
+        <h2>A sample post request is as follows(<strong>Id for each meeting is randomly generated!!</strong>)</h2>
+
+        <p>
+            {
+                "title":"cultural meet",
+                "participants":[{
+                    "name":"neeraj",
+                    "email": "neeraj@gmail.com",
+                    "rsvp": "MayBe"    
+                },
+                {
+                    "name":"shubham",
+                    "email": "shubham@gmail.com",
+                    "rsvp": "Yes"    
+                }],
+                "startTime":"12:34:56, TuesDay",
+                "endTime":"13:34:56, TuesDay",
+                "CreationTimeStamp": "12:34:58"
+            }
+        </p>
+    </div>
+    <a href="http://localhost:8080/meetings">http://localhost:8080/meetings</a>
+    <h2>For Accessing specific meeting with given id: </h2>
+    <br />
+    <a href="http://localhost:8080/meeting/{id}">http://localhost:8080/meetings/{id}</a>
+    <h2>For Accessing specific meeting with given email: </h2>
+    <br />
+    <a href="http://localhost:8080/meetings/?email=email">http://localhost:8080/meetingd?email=email</a>
+    <h2>For Accessing all meetings between start time and between end time </h2>
+    <a href="http://localhost:8080/meetings/?start=start_time&end=end_time">http://localhost:8080/meetingd?email=email</a>
+    <br />
+  </body>
+</html>
